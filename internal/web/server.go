@@ -1,6 +1,7 @@
 package web
 
 import (
+	"context"
 	"crypto/tls"
 	"fmt"
 	"io"
@@ -22,6 +23,7 @@ var (
 	upgrader websocket.Upgrader
 )
 
+// WebServer is a struct that represents a web server.
 type WebServer struct {
 	networkIf string
 	port      int
@@ -50,6 +52,7 @@ func IPWhitelist(whitelist []string) func(next http.Handler) http.Handler {
 	for _, element := range whitelist {
 		ip, ipNet, err := net.ParseCIDR(element)
 		if err != nil {
+			// If there is an error parsing the CIDR, it might be an IP address
 			if ip = net.ParseIP(element); ip == nil {
 				log.Println("Invalid IP in metrics whitelist: ", element)
 
@@ -291,9 +294,10 @@ func (ws *WebServer) Start() {
 	}
 }
 
+// Stop gracefully stops the webserver by shutting it down.
 func (ws *WebServer) Stop() {
 	log.Println("Stopping webserver...")
-	if err := ws.server.Shutdown(nil); err != nil {
+	if err := ws.server.Shutdown(context.TODO()); err != nil {
 		log.Fatal("Error while stopping webserver: ", err)
 	}
 }
