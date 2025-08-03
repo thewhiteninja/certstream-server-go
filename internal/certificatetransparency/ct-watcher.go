@@ -12,6 +12,7 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/d-Rickyy-b/certstream-server-go/internal/broadcast"
 	"github.com/d-Rickyy-b/certstream-server-go/internal/config"
 	"github.com/d-Rickyy-b/certstream-server-go/internal/models"
 	"github.com/d-Rickyy-b/certstream-server-go/internal/web"
@@ -263,6 +264,7 @@ func (w *worker) startDownloadingCerts(ctx context.Context) {
 			log.Printf("Worker for '%s' sleeping for 5 seconds due to error\n", w.ctURL)
 			time.Sleep(5 * time.Second)
 			log.Printf("Restarting worker for '%s'\n", w.ctURL)
+
 			continue
 		}
 	}
@@ -359,7 +361,7 @@ func certHandler(entryChan chan models.Entry) {
 		}
 
 		// Run json encoding in the background and send the result to the clients.
-		web.ClientHandler.Broadcast <- entry
+		broadcast.ClientHandler.MessageQueue <- entry
 
 		// Update metrics
 		url := entry.Data.Source.NormalizedURL
@@ -408,6 +410,7 @@ func getAllLogs() (loglist3.LogList, error) {
 			if operator.Name == additionalLog.Operator {
 				operator.Logs = append(operator.Logs, &customLog)
 				operatorFound = true
+
 				break
 			}
 		}

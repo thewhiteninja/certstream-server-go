@@ -115,18 +115,22 @@ func (m *LogMetrics) Inc(operator, url string) {
 	m.metrics[operator][url]++
 }
 
+// GetProcessedCerts returns the number of processed certificates.
 func GetProcessedCerts() int64 {
 	return processedCerts
 }
 
+// GetProcessedPrecerts returns the number of processed precerts.
 func GetProcessedPrecerts() int64 {
 	return processedPrecerts
 }
 
+// GetCertMetrics returns a copy of the internal metrics map.
 func GetCertMetrics() CTMetrics {
 	return metrics.GetCTMetrics()
 }
 
+// GetLogOperators returns a map of operator names to a list of CT logs.
 func GetLogOperators() map[string][]string {
 	return metrics.OperatorLogMapping()
 }
