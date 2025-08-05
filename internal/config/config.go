@@ -53,14 +53,14 @@ type Config struct {
 		MetricsURL          string `yaml:"metrics_url"`
 		ExposeSystemMetrics bool   `yaml:"expose_system_metrics"`
 	}
-	StreamProcessing struct {
-		Kafka struct {
-			Enabled    bool   `yaml:"enabled"`
-			ServerAddr string `yaml:"server_addr"`
-			ServerPort int    `yaml:"server_port"`
-			Topic      string `yaml:"topic"`
-		}
-	}
+	StreamProcessing []struct {
+		Name       string `yaml:"name"`
+		Type       string `yaml:"type"`
+		Enabled    bool   `yaml:"enabled"`
+		ServerAddr string `yaml:"server_addr"`
+		ServerPort int    `yaml:"server_port"`
+		Topic      string `yaml:"topic"`
+	} `yaml:"stream_processing"`
 	General struct {
 		// AdditionalLogs contains additional logs provided by the user that can be used in addition to the default logs.
 		AdditionalLogs []LogConfig `yaml:"additional_logs"`
