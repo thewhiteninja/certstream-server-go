@@ -28,6 +28,7 @@ type ServerConfig struct {
 
 type Config struct {
 	Webserver struct {
+		Enabled			   bool   `yaml:"enabled"`
 		ServerConfig       `yaml:",inline"`
 		FullURL            string `yaml:"full_url"`
 		LiteURL            string `yaml:"lite_url"`

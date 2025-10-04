@@ -1,4 +1,5 @@
 webserver:
+  enabled: false
   listen_addr: "0.0.0.0"
   listen_port: 8080
   full_url: "/full-stream"
@@ -9,10 +10,10 @@ webserver:
   compression_enabled: false
 
 disklogger:
-  enabled: false
+  enabled: true
   type: DOMAINS_ONLY # LITE, FULL, DOMAINS_ONLY
   log_directory: logs
-  rotation: DAILY # HOURLY, DAILY
+  rotation: HOURLY # HOURLY, DAILY
 
 prometheus:
   enabled: true

@@ -39,9 +39,11 @@ func main() {
 		disk.StartLogger(conf.DiskLogger.LogDirectory, conf.DiskLogger.Type, conf.DiskLogger.Rotation)
 	}
 
-	watcherLogChannels := []certificatetransparency.LogChannel{
-		certificatetransparency.LOG_CHAN_WEBSOCKET,
+	watcherLogChannels := []certificatetransparency.LogChannel{}
+	if conf.Webserver.Enabled {
+		watcherLogChannels = append(watcherLogChannels, certificatetransparency.LOG_CHAN_WEBSOCKET)
 	}
+	
 	if conf.DiskLogger.Enabled {
 		watcherLogChannels = append(watcherLogChannels, certificatetransparency.LOG_CHAN_DISK)
 	}

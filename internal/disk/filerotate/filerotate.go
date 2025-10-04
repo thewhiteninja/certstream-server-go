@@ -53,14 +53,14 @@ func newFile(directory string, rotateType RotateType) (file *os.File, filePath s
 
 	switch rotateType {
 	case ROTATE_HOURLY:
-		fileName = now.Format(time.RFC3339)
+		fileName = now.Format("200601021500")
 	case ROTATE_DAILY:
 		fallthrough
 	default:
-		fileName = now.Format("2006-01-02")
+		fileName = now.Format("20060102")
 	}
 
-	filePath = filepath.Join(directory, fmt.Sprintf("%s.txt", fileName))
+	filePath = filepath.Join(directory, fmt.Sprintf("%s.csv", fileName))
 
 	derr := os.MkdirAll(directory, 0755)
 	if derr != nil {
@@ -96,9 +96,10 @@ func (rotatableFile *RotatableFile) RotateFile() {
 
 		rotatableFile.Mutex.Unlock()
 
-		// sync and close old file
-		oldFile.Sync()
-		oldFile.Close()
+		if oldFile != nil {
+			oldFile.Sync()
+			oldFile.Close()
+		}
 	}
 }
 

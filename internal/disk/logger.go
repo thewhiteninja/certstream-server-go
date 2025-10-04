@@ -2,6 +2,7 @@ package disk
 
 import (
 	"log"
+	"strconv"
 
 	"github.com/d-Rickyy-b/certstream-server-go/internal/certstream"
 	"github.com/d-Rickyy-b/certstream-server-go/internal/disk/filerotate"
@@ -15,7 +16,7 @@ type DiskLog string
 
 const (
 	DISK_LOG_FULL         DiskLog = "FULL"
-	DISK_LOG_LITE         DiskLog = "LOG_LITE"
+	DISK_LOG_LITE         DiskLog = "LITE"
 	DISK_LOG_DOMAINS_ONLY DiskLog = "DOMAINS_ONLY"
 )
 
@@ -55,7 +56,11 @@ func logEntries(logDirectory string, logType DiskLog, rotation string) {
 		switch logType {
 		case DISK_LOG_DOMAINS_ONLY:
 			for _, domain := range entry.Data.LeafCert.AllDomains {
-				logFile.Write([]byte(domain + "\n"))
+				logFile.Write([]byte(
+					"\"" + domain + "\"," +
+						strconv.FormatInt(entry.Data.LeafCert.NotBefore, 10) + "," +
+						strconv.FormatInt(entry.Data.LeafCert.NotAfter, 10) + "," +
+						"\"" + *entry.Data.LeafCert.Issuer.O + "\"\n"))
 			}
 		case DISK_LOG_LITE:
 			logFile.Write(entry.JSONLite())
